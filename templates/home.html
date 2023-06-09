@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>SpeakShield</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="static/img/logo.png" type="image/x-icon" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="static/css/mdb.min.css" />
+    <link href="static/style2.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light bg-light" style="height: 55px">
+        <div class="container">
+            <div style="float: left; margin-top:-25px">
+                <a style="font-weight: bold;" id="head">SpeakShield</a>
+            </div>
+            <div style="float: right;">
+                <button class="btn btn_1" data-mdb-toggle="modal" data-mdb-target="#settingsModal">Settings</button>
+                <button class="btn btn_1" id="logoutbtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="btn-group" role="group"
+        style="position: fixed; left: 50%; top: 50%; z-index:1; margin-left: -160px;margin-top:-230px;">
+        <button type="button" class="btn bg-dark text-light btn-styles" id="tfilebtn">Text Based</button>
+        <button type="button" class="btn bg-dark text-light btn-styles" id="afilebtn">Audio Based</button>
+        <button type="button" class="btn bg-dark text-light btn-styles" id="vfilebtn">Video Based</button>
+    </div>
+
+    <div class="card" id="speechdiv" align="center">
+
+        <div class="container-fluid">
+            <!--Text Based-->
+            <div class="" id="tfilediv" align="center">
+                <textarea id="inptext" placeholder="Please input the text for hate speech analysis. . ."></textarea>
+                <br /><br />
+                <button type="button" class="btn bg-dark text-light btn-styles" id="analyzetextbtn"
+                    style="width: 550px">Analyze</button>
+                <br /><br />
+
+            </div>
+            <!--End-->
+
+            <!--Audio Based-->
+            <div class="" id="afilediv" style="display: none" align="center">
+
+                <div class="col-lg-8" style="margin-top:40px;">
+                    <label for="inpaudio" class="form-label" style="float:left">Upload Audio File</label>
+                    <input class="form-control bshadow" type="file" id="inpaudio" accept=".wav" />
+                    <br />
+                    <div class="form-check form-switch" align="justify" style="margin-top:-10px">
+                        <input class="form-check-input" type="checkbox" role="switch" id="showaudio" />
+                        <label class="form-check-label" for="showaudio">Preview File</label>
+                    </div>
+                    <div id="showafile" style="display: none">
+                        <audio controls style="width: 400px; margin-top:20px;" id="playaudio"></audio>
+                    </div>
+                    <br /><br />
+                    <button type="button" class="btn bg-dark text-light btn-styles btn-block"
+                        id="analyzeaudiobtn">Analyze</button>
+                    <br />
+                    <div id="loader"></div>
+                    <br />
+                </div>
+
+
+            </div>
+            <!--End-->
+
+            <!--Video Based-->
+            <div class="" id="vfilediv" style="display: none" align="center">
+
+                <div class="col-lg-8" style="margin-top:40px;">
+                    <label for="inpvideo" class="form-label" style="float:left">Upload Video File</label>
+                    <input class="form-control bshadow" type="file" id="inpvideo" accept=".mp4, .m4a, .m4v, .mkv" />
+                    <br />
+                    <div class="form-check form-switch" align="justify" style="margin-top:-10px">
+                        <input class="form-check-input" type="checkbox" role="switch" id="showvideo" />
+                        <label class="form-check-label" for="showvideo">Preview File</label>
+                    </div>
+                    <div id="showvfile" style="display: none">
+                        <video controls style="width: 100%; margin-top:20px; height: 350px; background-color:black;"
+                            id="playvideo"></video>
+                    </div>
+                    <br /><br />
+                    <button type="button" class="btn bg-dark text-light btn-styles btn-block"
+                        id="analyzevideobtn">Analyze</button>
+                    <br />
+                    <div id="loader2"></div>
+                    <br />
+                </div>
+
+            </div>
+            <!--End-->
+
+            <div id="resdiv" style="display: none">
+                <h3> Assessment Result </h3>
+                <spans id="resspan" style="font-weight: bold; font-size: 18px;"></spans>
+
+                <div id="barChart" style="width: 75%"></div>
+
+                <br /><br />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--Settings Modal-->
+
+    <div class="modal fade" id="settingsModal" data-mdb-backdrop="static" data-mdb-keyboard="false" tabindex="-1"
+        aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="border: 4px solid rgba(7, 7, 89, 0.75);">
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="btn-group" role="group" style="margin-top:-30px;">
+                            <button type="button" class="btn bg-dark text-light" id="configbtn"
+                                style="text-transform: capitalize; font-weight:bold; font-size: 13px">Configure
+                                System</button>
+                            <button type="button" class="btn bg-dark text-light" id="passwordbtn"
+                                style="text-transform: capitalize; font-weight:bold; font-size: 13px">Change
+                                Password</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div id="configdiv">
+                            <div class="row">
+                                <div class="col-lg-5" style="margin-top:8px;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="lp_filter_switch" />
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Add Low Pass
+                                            Filter</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5" style="margin-top:-8px">
+                                    <label class="form-label" for="lp_filter_freq">Cut-Off Frequency</label>
+                                    <div class="range" style="margin-top:-7px">
+                                        <input type="range" class="form-range" min="300" max="3000" step="50"
+                                            id="lp_freq" disabled />
+                                    </div>
+                                </div>
+                                <dic class="col-lg-2">
+                                    <input type="text" id="lp_freq_value"
+                                        style="border: 3px solid rgba(0,0,0,0.75); width:60px; text-align: center;"
+                                        disabled>
+                                </dic>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-5" style="margin-top:8px;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="hp_filter_switch" />
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Add High Pass
+                                            Filter</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5" style="margin-top:-8px">
+                                    <label class="form-label" for="hp_filter_freq">Cut-Off Frequency</label>
+                                    <div class="range" style="margin-top:-7px">
+                                        <input type="range" class="form-range" min="300" max="3000" step="50"
+                                            id="hp_freq" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" id="hp_freq_value"
+                                        style="border: 3px solid rgba(0,0,0,0.75); width:60px; text-align: center;"
+                                        disabled>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-outline">
+                                        <input type="text" id="energy_thresh" class="form-control" />
+                                        <label class="form-label" for="energy_thresh">Energy Threshold</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <select class="form-select" id="speech_api">
+                                        <option selected>Select Speech Engine API</option>
+                                        <option value="0">Google</option>
+                                        <option value="1">Sphinx</option>
+                                        <option value="2">Whisper</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br /><br />
+                            <div align="center">
+                                <button class="btn btn-block bg-dark text-light"
+                                    style="text-transform: capitalize; font-weight:bold; font-size: 13px"
+                                    id="savebtn">Save</button>
+                            </div>
+                        </div>
+                        <div id="pswddiv" style="display:none">
+                            <div class="form-outline">
+                                <input type="password" id="cpswd" class="form-control" />
+                                <label class="form-label" for="cpswd">Current Password</label>
+                            </div>
+                            <br />
+                            <div class="form-outline">
+                                <input type="password" id="npswd" class="form-control" />
+                                <label class="form-label" for="npswd">New Password</label>
+                            </div>
+                            <br />
+                            <div class="form-outline">
+                                <input type="password" id="npswd2" class="form-control" />
+                                <label class="form-label" for="npswd2">Confirm Password</label>
+                            </div>
+                            <br />
+                            <br />
+                            <div align="center">
+                                <button class="btn btn-block bg-dark text-light"
+                                    style="text-transform: capitalize; font-weight:bold; font-size: 13px"
+                                    id="changepswdbtn">Change Password</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-dark text-light" data-mdb-dismiss="modal"
+                        style="text-transform: capitalize; font-weight:bold; font-size: 13px">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="static/js/mdb.min.js"></script>
+    <!-- Custom scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include MDB Bootstrap JS and Chart.js -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+
+
+        $(document).ready(function(){
+            $.ajax({
+                url: "/load_default",
+                success: function(response){
+                    if (response.lp_filter == 'true'){
+                        $("#lp_filter_switch").prop("checked", true)
+                    }else{
+                        $("#lp_filter_switch").prop("checked", false)
+                    }
+
+                    if (response.hp_filter == 'true'){
+                        $("#hp_filter_switch").prop("checked", true)
+                    }else{
+                        $("#hp_filter_switch").prop("checked", false)
+                    }
+
+                    $("#lp_freq").val(response.lp_freq)
+                    $("#hp_freq").val(response.hp_freq)
+                    $("#lp_freq_value").val(response.lp_freq)
+                    $("#hp_freq_value").val(response.hp_freq)
+                    $("#energy_thresh").val(response.energy_thresh)
+                    $("#speech_api").val(response.speech_api)
+                    $("#hp_freq").removeAttr("disabled")
+                    hp = true
+                    $("#lp_freq").removeAttr("disabled")
+                    lp = true
+
+                }
+            })
+        })
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+
+        h_val = 0
+        a_val = 0
+        n_val = 0
+        // Callback function to draw the chart
+        function drawChart() {
+            // Data
+            const data = google.visualization.arrayToDataTable([
+                ['Class', 'Percentage', { role: 'style' }],
+                ['Hatespeech', h_val, '#dc3545'],
+                ['Offensive', a_val, '#dfc107'],
+                ['Neutral', n_val, '#17a2b8']
+            ]);
+
+            // Options
+            const options = {
+                legend: { position: 'none' },
+                vAxis: {
+                    title: 'Percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                }
+            };
+
+            // Create the chart
+            const chart = new google.visualization.ColumnChart(document.getElementById('barChart'));
+            chart.draw(data, options);
+        }
+
+        $("#logoutbtn").click(function () {
+            $.ajax({
+                url: "/logout",
+                success: function (response) {
+                    window.location.href = response.redirect
+                }
+            })
+        })
+
+        $("#lp_freq").change(function () {
+            $("#lp_freq_value").val($(this).val());
+        });
+
+        $("#hp_freq").change(function () {
+            $("#hp_freq_value").val($(this).val());
+        });
+
+
+        lp = false
+        $("#lp_filter_switch").change(function () {
+            if (lp == false) {
+                $("#lp_freq").removeAttr("disabled")
+                lp = true
+            } else {
+                $("#lp_freq").attr("disabled", "disabled")
+                lp = false
+            }
+        })
+
+        hp = false
+        $("#hp_filter_switch").change(function () {
+            if (hp == false) {
+                $("#hp_freq").removeAttr("disabled")
+                hp = true
+            } else {
+                $("#hp_freq").attr("disabled", "disabled")
+                hp = false
+            }
+        })
+
+
+        $("#passwordbtn").click(function () {
+            $("#configdiv").slideUp("slow")
+            $("#pswddiv").slideDown("slow")
+        })
+
+        $("#configbtn").click(function () {
+            $("#pswddiv").slideUp("slow")
+            $("#configdiv").slideDown("slow")
+        })
+
+
+        $("#savebtn").click(function () {
+            lp_freq = $("#lp_freq_value").val()
+            hp_freq = $("#hp_freq_value").val()
+            energy_thresh = $("#energy_thresh").val()
+            speech_api = $("#speech_api").val()
+            if (parseInt(energy_thresh) >= -50 && parseInt(energy_thresh) <= -30) {
+                $.ajax({
+                    url: "/settings",
+                    method: "POST",
+                    data: {
+                        lp_filter: lp,
+                        hp_filter: hp,
+                        lp_freq: lp_freq,
+                        hp_freq: hp_freq,
+                        energy_thresh: energy_thresh,
+                        speech_api: speech_api
+                    },
+                    success: function (response) {
+                        alert(response)
+                    }
+
+                })
+            } else {
+                alert("Please enter a threshold value minimum is -30dB and maximum is -50dB")
+            }
+        })
+
+
+        $("#changepswdbtn").click(function () {
+            cpswd = $("#cpswd").val()
+            npswd = $("#npswd").val()
+            npswd2 = $("#npswd2").val()
+            if (npswd == npswd2) {
+                $.ajax({
+                    url: "/change_password",
+                    method: "POST",
+                    data: {
+                        cpswd: cpswd,
+                        npswd: npswd,
+                        npswd2: npswd2
+                    },
+                    success: function (response) {
+                        alert(response)
+                        $("#cpswd").val("")
+                        $("#npswd").val("")
+                        $("#npswd2").val("")
+
+                    }
+                })
+            }
+        })
+
+        $("#analyzetextbtn").click(function () {
+            text = $("#inptext").val()
+            $("#resdiv").slideUp("slow")
+            if (text != "") {
+                $.ajax({
+                    url: "/analyze_text",
+                    method: "POST",
+                    data: {
+                        text: text
+                    },
+                    success: function (response) {
+
+                        col = '#000'
+                        if (response.class == "0") {
+                            col = '#dc3545'
+                        } else if (response.class == "1") {
+                            col = '#dfc107'
+                        } else {
+                            col = '#17a2b8'
+                        }
+
+                        $("#resspan").html(
+                            "<b>Speech Type: <font style='color: " + col + "'>" + response.label + "</font></b>" +
+                            "<br/><b style='font-size: 15px'>Predicted Probability: " + response.prob + "</b><br/>"
+                        )
+
+                        h_val = parseInt(response.HS);
+                        a_val = parseInt(response.AB);
+                        n_val = parseInt(response.NE);
+                        google.charts.setOnLoadCallback(drawChart);
+                        $("#resdiv").slideDown("slow")
+                    }
+                })
+            } else {
+                alert("Please enter the speech!")
+            }
+
+            
+        })
+
+
+
+
+        $("#tfilebtn").click(function () {
+            $("#afilediv").slideUp("slow")
+            $("#vfilediv").slideUp("slow")
+            $("#resdiv").slideUp("slow")
+            $("#tfilediv").slideDown("slow")
+        })
+
+        $("#afilebtn").click(function () {
+            $("#vfilediv").slideUp("slow")
+            $("#tfilediv").slideUp("slow")
+            $("#resdiv").slideUp("slow")
+            $("#afilediv").slideDown("slow")
+        })
+
+        $("#vfilebtn").click(function () {
+            $("#afilediv").slideUp("slow")
+            $("#tfilediv").slideUp("slow")
+            $("#resdiv").slideUp("slow")
+            $("#vfilediv").slideDown("slow")
+
+        })
+
+
+        $("#showaudio").click(function () {
+            $("#showafile").toggle(200)
+        })
+
+        $("#showvideo").click(function () {
+            $("#showvfile").toggle(200)
+        })
+
+        $("#inpaudio").change(function () {
+            var audioInput = document.getElementById('inpaudio');
+            var audioFile = audioInput.files[0];
+
+            if (audioFile) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var audioData = e.target.result;
+                    var audioPlayer = document.getElementById('playaudio');
+                    audioPlayer.src = audioData;
+                };
+
+                reader.readAsDataURL(audioFile);
+            }
+        })
+
+        $("#analyzeaudiobtn").click(function () {
+            $("#loader").attr("class", "progresss")
+            var audioInput = document.getElementById('inpaudio');
+            var audioFile = audioInput.files[0];
+            if (audioFile) {
+                let formData = new FormData();
+                formData.append('audio', audioFile);
+                $.ajax({
+                    url: "/analyze_audio",
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        col = '#000'
+                        if (response.class == "0") {
+                            col = '#dc3545'
+                        } else if (response.class == "1") {
+                            col = '#dfc107'
+                        } else {
+                            col = '#17a2b8'
+                        }
+
+                        $("#resspan").html(
+                            "<b>Speech Type: <font style='color: " + col + "'>" + response.label + "</font></b>" +
+                            "<br/><b style='font-size: 15px'>Predicted Probability: " + response.prob + "</b><br/>"
+                        )
+
+                        h_val = parseInt(response.HS);
+                        a_val = parseInt(response.AB);
+                        n_val = parseInt(response.NE);
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        $("#loader").removeAttr("class")
+                        $("#resdiv").slideDown("slow")
+                    }
+                })
+
+
+            } else {
+                alert("Please upload an audio!")
+            }
+
+        })
+
+
+        $("#analyzevideobtn").click(function () {
+            $("#loader2").attr("class", "progresss")
+            var videoInput = document.getElementById('inpvideo');
+            var videoFile = videoInput.files[0];
+            if (videoFile) {
+                const formData2 = new FormData();
+                formData2.append('video', videoFile);
+                $.ajax({
+                    url: "/analyze_video",
+                    method: "POST",
+                    data: formData2,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        col = '#000'
+                        if (response.class == "0") {
+                            col = '#dc3545'
+                        } else if (response.class == "1") {
+                            col = '#dfc107'
+                        } else {
+                            col = '#17a2b8'
+                        }
+
+                        $("#resspan").html(
+                            "<b>Speech Type: <font style='color: " + col + "'>" + response.label + "</font></b>" +
+                            "<br/><b style='font-size: 15px'>Predicted Probability: " + response.prob + "</b><br/>"
+                        )
+
+                        h_val = parseInt(response.HS);
+                        a_val = parseInt(response.AB);
+                        n_val = parseInt(response.NE);
+                        google.charts.setOnLoadCallback(drawChart);
+                        $("#loader2").removeAttr("class")
+                        $("#resdiv").slideDown("slow")
+                    }
+                })
+
+
+
+
+            } else {
+                alert("Please upload a video!")
+            }
+
+        })
+
+        $("#inpvideo").change(function () {
+            var videoInput = document.getElementById('inpvideo');
+            var videoFile = videoInput.files[0];
+
+            if (videoFile) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var videoData = e.target.result;
+                    var videoPlayer = document.getElementById('playvideo');
+                    videoPlayer.src = videoData;
+                };
+
+                reader.readAsDataURL(videoFile);
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

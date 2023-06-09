@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>SpeakShield</title>
+  <!-- MDB icon -->
+  <link rel="icon" href="static/img/logo.png" type="image/x-icon" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="static/css/mdb.min.css" />
+  <link href="static/style2.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div id="SplashScreen">
+    <div class="progress">
+      <div class="progress-bar pcolor" id="pbar" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+        aria-valuemax="100"></div>
+    </div>
+    <div id="splashimgDiv">
+      <img src="static/img/logo.png" id="splashimg">
+    </div>
+    <h1 style="margin-top:25px">
+      <span class="let1">S</span>
+      <span class="let2">p</span>
+      <span class="let3">e</span>
+      <span class="let4">a</span>
+      <span class="let5">k</span>
+      <span class="let6">S</span>
+      <span class="let7">h</span>
+      <span class="let8">i</span>
+      <span class="let9">e</span>
+      <span class="let10">l</span>
+      <span class="let11">d</span>
+    </h1>
+  </div>
+
+  <div class="" style="display:none" id="mainDiv">
+    <!-- Just an image -->
+    <nav class="navbar navbar-light bg-light" style="height: 55px">
+      <div class="container">
+        <div style="float: left; margin-top:-25px">
+          <a style="font-weight: bold;" id="head">SpeakShield</a>
+        </div>
+        <div style="float: right;">
+          <button class="btn btn_1" id="homebtn">Home</button>
+          <button class="btn btn_1" id="aboutbtn">About Us</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="card" id="logreg" align="center">
+      <div class="container-fluid">
+        <div class="btn-group" role="group" style="margin-top:-30px;">
+          <button type="button" class="btn bg-dark text-light" id="logbtn">Login</button>
+          <button type="button" class="btn bg-dark text-light" id="regbtn">Register</button>
+        </div>
+
+        <div class="col-lg-8 mx-auto" style="margin-top:80px;" id="logdiv">
+          <div class="form-outline">
+            <input type="text" id="uname" class="form-control forms2" />
+            <label class="form-label" for="uname">Username</label>
+          </div>
+          <div class="form-outline">
+            <input type="password" id="pswd" class="form-control forms2" />
+            <label class="form-label" for="pswd">Password</label>
+          </div>
+          <button class="btn btn-block bg-dark text-light" style="margin-top:15px" id="login">Login</button>
+        </div>
+
+        <div class="col-lg-8 mx-auto" style="display: none; margin-top:40px" id="regdiv">
+          <div class="form-outline">
+            <input type="text" id="fname" class="form-control forms2" />
+            <label class="form-label" for="fname">Full Name</label>
+          </div>
+          <div class="form-outline">
+            <input type="text" id="uname2" class="form-control forms2" />
+            <label class="form-label" for="uname2">Username</label>
+          </div>
+          <div class="form-outline">
+            <input type="password" id="pswd2" class="form-control forms2" />
+            <label class="form-label" for="pswd2">Password</label>
+          </div>
+          <div class="form-outline">
+            <input type="password" id="cpswd2" class="form-control forms2" />
+            <label class="form-label" for="cpswd2">Confirm Password</label>
+          </div>
+          <button class="btn btn-block bg-dark text-light" style="margin-top:15px" id="register">Register</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card" id="aboutdiv">
+      <div class="col-lg-10 mx-auto" align="center"
+        style="font-size:19px;margin-top:40px; font-style: italic; color: rgba(255, 10, 88, 0.75)">
+        SpeakShield is a cutting-edge hate speech detection project that utilizes the power of BiLSTM (Bidirectional
+        Long Short-Term Memory) architecture. Our goal is to create a safer online environment by automatically
+        identifying and categorizing offensive language. With three distinct classes - Abusive, Hatespeech, and Neutral
+        - we enable accurate classification of content. By leveraging the sequential nature of text data, our BiLSTM
+        model captures contextual dependencies to make precise predictions. Through the integration of SpeakShield, your
+        platform can proactively detect and flag harmful content, empowering effective moderation and promoting
+        inclusivity. Join us in combatting hate speech and fostering respectful digital spaces.
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <!-- MDB -->
+  <script type="text/javascript" src="static/js/mdb.min.js"></script>
+  <!-- Custom scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  {% if load %}
+  <script>
+    $("#SplashScreen").css("display", "none")
+    $("#mainDiv").css("display", "block")
+    $("#smod").click()
+  </script>
+  {% endif %}
+
+  <script>
+    $(document).ready(function () {
+      var progressBar = $('#pbar');
+      progressBar.animate({
+        width: '100%'
+      }, 2510, function () {
+        progressBar.attr('aria-valuenow', '100');
+      });
+      setTimeout(() => {
+        $("#SplashScreen").css("display", "none")
+        $("#mainDiv").css("display", "block")
+      }, 3000);
+    });
+
+
+    $("#logbtn").click(function () {
+      $("#regdiv").slideUp("slow")
+      $("#logdiv").slideDown("slow")
+    })
+
+    $("#regbtn").click(function () {
+      $("#logdiv").slideUp("slow")
+      $("#regdiv").slideDown("slow")
+    })
+
+
+    $("#homebtn").click(function () {
+      $("#aboutdiv").slideUp("slow")
+      $("#logreg").slideDown("slow")
+    })
+
+    $("#aboutbtn").click(function () {
+      $("#logreg").slideUp("slow")
+      $("#aboutdiv").slideDown("slow")
+    })
+
+
+    $("#login").click(function () {
+
+      let uname = $("#uname").val()
+      let pswd = $("#pswd").val()
+
+      if (uname != "" || pswd != "") {
+        $.ajax({
+          url: "/login",
+          method: "POST",
+          data: {
+            uname: uname,
+            pswd: pswd
+          },
+          success: function (response) {
+            if (response.success){
+              window.location.href = response.redirect;
+            }else{
+              alert(response)
+            }
+          }
+        })
+        
+      } else { 
+        alert("Please fill in all the required fields")
+      }
+
+    })
+
+
+    $("#register").click(function () {
+      let fname = $("#fname").val()
+      let uname2 = $("#uname2").val()
+      let pswd2 = $("#pswd2").val()
+      let cpswd2 = $("#cpswd2").val()
+
+      if (uname2 != "" && pswd2 != "" && fname != "") {
+        if (pswd2 == cpswd2) {
+          $.ajax({
+            url: "/register",
+            method: "POST",
+            data: {
+              uname: uname2,
+              pswd: pswd2,
+              fname: fname,
+            },
+            success: function (response) {
+              alert(response)
+            }
+          })
+        }
+        else {
+          alert("Mismatching password!")
+        }
+        
+      } else {
+        alert("Please fill in all the required fields")
+      }
+
+    })
+
+    
+
+  </script>
+
+</body>
+
+</html>
